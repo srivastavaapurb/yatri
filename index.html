@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yatri Sathi Feedback Response System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 60px auto;
+            padding: 40px;
+            background-color: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 42px;
+            margin-bottom: 30px;
+            color: #007BFF;
+            font-weight: 700;
+        }
+
+        textarea {
+            width: 100%;
+            height: 160px;
+            margin-bottom: 25px;
+            padding: 20px;
+            font-size: 18px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            transition: border-color 0.3s ease;
+            outline: none;
+            resize: none;
+        }
+
+        textarea:focus {
+            border-color: #007BFF;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            font-size: 20px;
+            font-weight: 600;
+            color: #ffffff;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            transform: translateY(-3px);
+        }
+
+        #responseContainer {
+            margin-top: 40px;
+        }
+
+        .response-card {
+            display: grid;
+            grid-template-columns: 30% 70%;
+            gap: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            background-color: #fff;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border-left: 6px solid #007BFF;
+            transition: transform 0.2s ease;
+        }
+
+        .response-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .response-title {
+            font-weight: 600;
+            font-size: 18px;
+            color: #007BFF;
+            display: flex;
+            align-items: center;
+        }
+
+        .response-title::before {
+            content: '\1F4AC'; /* Speech balloon emoji for feedback */
+            font-size: 24px;
+            margin-right: 8px;
+        }
+
+        .response-content {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .feedback-category {
+            text-align: center;
+            font-size: 22px;
+            margin-top: 25px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .feedback-category span {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Yatri Sathi Feedback Response System</h1>
+        <textarea id="feedbackText" placeholder="Enter your feedback here..."></textarea>
+        <button onclick="processFeedback()">Submit Feedback</button>
+
+        <div id="responseContainer"></div>
+    </div>
+
+    <script>
+        async function processFeedback() {
+            const feedbackText = document.getElementById("feedbackText").value;
+            const responseContainer = document.getElementById("responseContainer");
+            responseContainer.innerHTML = ""; // Clear previous responses
+
+            try {
+                const response = await fetch("/process_review/", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ review_text: feedbackText }),
+                });
+                const data = await response.json();
+
+                if (data.response) {
+                    displayResponse(data.response);
+                } else {
+                    responseContainer.innerHTML = "<p>An error occurred while processing the feedback.</p>";
+                }
+            } catch (error) {
+                responseContainer.innerHTML = "<p>An error occurred: " + error.message + "</p>";
+            }
+        }
+
+        function displayResponse(response) {
+    const responseContainer = document.getElementById("responseContainer");
+
+    const responseCard = document.createElement("div");
+    responseCard.className = "response-card";
+
+    const feedbackCategory = document.createElement("div");
+    feedbackCategory.className = "feedback-category";
+    feedbackCategory.innerHTML = `<span>${response.feedback_category}</span>`;
+
+    // User Feedback section
+    const userFeedback = document.createElement("div");
+    userFeedback.className = "response-title";
+    userFeedback.innerHTML = "User Feedback";
+
+    const userFeedbackContent = document.createElement("div");
+    userFeedbackContent.className = "response-content";
+    userFeedbackContent.innerText = response.user_response; // Display user feedback as is
+
+    // System Response section
+    const systemResponseTitle = document.createElement("div");
+    systemResponseTitle.className = "response-title";
+    systemResponseTitle.innerHTML = "System Response";
+
+    const systemResponseContent = document.createElement("div");
+    systemResponseContent.className = "response-content";
+    // Remove "YOUR FEEDBACK: " from the system response
+    systemResponseContent.innerText = response.our_response_english.replace(/YOUR FEEDBACK:\s*[^;]*;\s*/, "").replace(/OUR RESPONSE:\s*/i, "").trim();
+
+    // Append to response card
+    responseCard.appendChild(userFeedback);
+    responseCard.appendChild(userFeedbackContent);
+    responseCard.appendChild(systemResponseTitle);
+    responseCard.appendChild(systemResponseContent);
+
+    // Display positive response separately if feedback is positive
+    if (response.is_positive) {
+        const positiveResponseCard = document.createElement("div");
+        positiveResponseCard.className = "response-card";
+        positiveResponseCard.style.borderLeftColor = "#28a745"; // Green color for positive feedback
+
+        const positiveTitle = document.createElement("div");
+        positiveTitle.className = "response-title";
+        positiveTitle.innerHTML = "Positive Feedback";
+
+        const positiveContent = document.createElement("div");
+        positiveContent.className = "response-content";
+        positiveContent.innerText = "Thank you for your positive feedback! We’re glad to know you’re satisfied with our service.";
+
+        positiveResponseCard.appendChild(positiveTitle);
+        positiveResponseCard.appendChild(positiveContent);
+        responseContainer.appendChild(positiveResponseCard);
+    }
+
+    // Append category and feedback response to main container
+    responseContainer.appendChild(feedbackCategory);
+    responseContainer.appendChild(responseCard);
+}
+
+    </script>
+</body>
+
+</html>
+
+
+
+
