@@ -4,3 +4,13 @@ langchain-community
 fastapi
 uvicorn
 nest-asyncio
+huggingface_hub
+transformers
+torch
+pandas
+scikit-learn
+openpyxl
+sentence-transformers
+faiss-cpu
+spacy
+nomic
