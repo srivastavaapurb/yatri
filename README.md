@@ -1,4 +1,3 @@
-```markdown
 # Yatri Sathi Feedback Response System  
 
 AI-powered automated feedback classification and response generation system built for  
@@ -41,25 +40,21 @@ The system combines traditional NLP techniques with large language models to imp
 
 ## Architecture  
 
-```
-
-User Input (UI)
-↓
-FastAPI Backend
-↓
-Language Detection (AWS Comprehend)
-↓
-Translation (AWS Translate)
-↓
-TF-IDF + Cosine Similarity (Category Detection)
-↓
-Sentiment Analysis (AWS)
-↓
-LLM Response Generation (Mixtral via LangChain)
-↓
-Output Display (UI)
-
-```
+    User Input (UI)
+          ↓
+    FastAPI Backend
+          ↓
+    Language Detection (AWS Comprehend)
+          ↓
+    Translation (AWS Translate)
+          ↓
+    TF-IDF + Cosine Similarity (Category Detection)
+          ↓
+    Sentiment Analysis (AWS)
+          ↓
+    LLM Response Generation (Mixtral via LangChain)
+          ↓
+    Output Display (UI)
 
 ---
 
@@ -94,16 +89,12 @@ Output Display (UI)
 
 ## Project Structure  
 
-```
-
-.
-├── app.py                 # FastAPI backend
-├── index.html            # Frontend UI
-├── requirements.txt      # Dependencies
-├── vector_database.json  # Generated keyword database
-├── settings.py           # API keys (user-defined, not included)
-
-````
+    .
+    ├── app.py                 # FastAPI backend
+    ├── index.html            # Frontend UI
+    ├── requirements.txt      # Dependencies
+    ├── vector_database.json  # Generated keyword database
+    ├── settings.py           # API keys (user-defined, not included)
 
 ---
 
@@ -114,11 +105,11 @@ Output Display (UI)
 ```bash
 git clone https://github.com/your-username/yatri-sathi-feedback.git
 cd yatri-sathi-feedback
-````
+```
 
 ---
 
-### 2. Install Dependencies
+### 2. Install Dependencies  
 
 ```bash
 pip install -r requirements.txt
@@ -126,7 +117,7 @@ pip install -r requirements.txt
 
 ---
 
-### 3. Configure Environment
+### 3. Configure Environment  
 
 Create a `settings.py` file in the root directory:
 
@@ -138,22 +129,22 @@ AWS_SECRET_ACCESS_KEY = "your_secret"
 
 ---
 
-### 4. Run the Application
+### 4. Run the Application  
 
 ```bash
 python app.py
 ```
 
-Open in browser:
-[http://localhost:8000](http://localhost:8000)
+Open in browser:  
+http://localhost:8000  
 
 ---
 
-## API Endpoint
+## API Endpoint  
 
 ### POST `/process_review/`
 
-#### Request
+#### Request  
 
 ```json
 {
@@ -161,7 +152,7 @@ Open in browser:
 }
 ```
 
-#### Response
+#### Response  
 
 ```json
 {
@@ -175,59 +166,51 @@ Open in browser:
 
 ---
 
-## Example Workflow
+## Example Workflow  
 
-1. User submits feedback:
-   "Driver was rude and cab was late"
+1. User submits feedback:  
+   "Driver was rude and cab was late"  
 
-2. System performs:
+2. System performs:  
+   - Language detection and translation  
+   - Category classification  
+   - Sentiment analysis  
+   - Response generation  
 
-   * Language detection and translation
-   * Category classification
-   * Sentiment analysis
-   * Response generation
-
-3. Output:
-
-   * Structured feedback category
-   * AI-generated response
+3. Output:  
+   - Structured feedback category  
+   - AI-generated response  
 
 ---
 
-## Highlights
+## Highlights  
 
-* End-to-end automated feedback handling system
-* Scalable and production-oriented design
-* Achieved high classification accuracy with minimal misclassification
-* Real-time processing using FastAPI
-* Designed for a government-backed mobility platform
-
----
-
-## Future Improvements
-
-* Replace TF-IDF with embedding-based semantic search (FAISS + Sentence Transformers)
-* Add analytics dashboard for feedback trends
-* Extend multilingual support
-* Improve response personalization
-* Deploy as a cloud-based microservice
+- End-to-end automated feedback handling system  
+- Scalable and production-oriented design  
+- Achieved high classification accuracy with minimal misclassification  
+- Real-time processing using FastAPI  
+- Designed for a government-backed mobility platform  
 
 ---
 
-## Acknowledgements
+## Future Improvements  
 
-* Webel (Department of IT & Electronics), Government of West Bengal
-* AWS AI Services
-* HuggingFace and LangChain ecosystem
+- Replace TF-IDF with embedding-based semantic search (FAISS + Sentence Transformers)  
+- Add analytics dashboard for feedback trends  
+- Extend multilingual support  
+- Improve response personalization  
+- Deploy as a cloud-based microservice  
+
+---
+
+## Acknowledgements  
+
+- Webel (Department of IT & Electronics), Government of West Bengal  
+- AWS AI Services  
+- HuggingFace and LangChain ecosystem  
 
 ---
 
 ## License  
 
-This project was developed as part of an internship at Webel (Department of IT & Electronics), Government of West Bengal.  
-
-The code is shared for educational and demonstration purposes only.  
-Unauthorized commercial use or redistribution may be restricted.
-
-```
-```
+This project was developed as part of an internship at Webel (Department of IT & Electronics), Government of West Bengal. The code is shared for educational and demonstration purposes only. Unauthorized commercial use or redistribution may be restricted.
